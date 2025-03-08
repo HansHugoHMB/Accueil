@@ -1,11 +1,13 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <style>
-/* Styles fixes pour l'entête */
+/* Styles fixes pour l'en-tête */
 body {
     margin: 0;
     padding-top: 60px;
+    height: 100vh;
 }
 
 .tabs-container {
@@ -60,10 +62,22 @@ body {
     height: 3px;
     background: linear-gradient(to right, #0077B5, #FFD700, #CE1126);
 }
+
+/* Contenu dans iframe */
+.content-iframe {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    border: none;
+    z-index: 1;
+}
 </style>
 </head>
 <body>
 
+<!-- Section En-tête Indépendante -->
 <div class="tabs-container">
     <ul class="tabs-list">
         <li class="tab-item"><a href="https://hanshugohmb.github.io/Power-family-/" class="tab-link active">Accueil</a></li>
@@ -75,39 +89,35 @@ body {
     </ul>
 </div>
 
+<!-- Contenu Externe -->
+<iframe class="content-iframe" src="https://hanshugohmb.github.io/Power-family-/"></iframe>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('.tab-link');
-    const accueilLink = document.querySelector('.tab-item:first-child .tab-link');
-    
-    // Fonction d'activation de l'onglet
-    function activateTab(targetLink) {
-        links.forEach(l => l.classList.remove('active'));
-        targetLink.classList.add('active');
-        localStorage.setItem('activeTab', targetLink.href);
-    }
+    const iframe = document.querySelector('.content-iframe');
 
-    // Gestion du chargement initial
-    const savedTab = localStorage.getItem('activeTab');
-    const currentUrl = window.location.href;
-    
-    if(savedTab && currentUrl === savedTab) {
-        const activeLink = document.querySelector(`.tab-link[href="${savedTab}"]`);
-        if(activeLink) activateTab(activeLink);
-    } else {
-        activateTab(accueilLink);
-        if(currentUrl !== accueilLink.href) {
-            window.location.href = accueilLink.href;
-        }
-    }
+    // Chargement initial
+    iframe.src = document.querySelector('.tab-link.active').href;
 
     // Gestion des clics
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            activateTab(this);
-            window.location.href = this.href;
+            
+            // Mise à jour de l'onglet actif
+            links.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Chargement du contenu
+            iframe.src = this.href;
         });
+    });
+
+    // Synchronisation avec l'historique
+    window.addEventListener('popstate', () => {
+        const activeLink = document.querySelector('.tab-link.active');
+        iframe.src = activeLink.href;
     });
 });
 </script>
@@ -115,67 +125,57 @@ document.addEventListener('DOMContentLoaded', function() {
 </body>
 </html>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<style>
-/* Styles de l'entête fixe */
-.tabs-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: linear-gradient(145deg, #87CEEB, #B0E2FF);
-    z-index: 1000;
-    overflow-x: auto;
-}
+    <meta charset="UTF-8">
+    <title>Système de Présences Sécurisé</title>
+    <style>
+        /* Overlay style */
+        #securityOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
-.content-frame {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: calc(100vh - 60px);
-    border: none;
-}
+        .security-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
 
-.tabs-list {
-    list-style: none;
-    margin: 0;
-    padding: 0 20px;
-    display: flex;
-    height: 100%;
-    align-items: center;
-}
+        .security-input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 2px;
+        }
 
-.tab-item {
-    margin-right: 25px;
-}
-
-.tab-link {
-    text-decoration: none;
-    color: #2F4F4F;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-weight: 600;
-    padding: 15px 20px;
-    display: block;
-    position: relative;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-}
-
-.tab-link.active {
-    background: rgba(255, 255, 255, 0.3);
-    color: #0077B5;
-}
-
-.tab-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
+        .security-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
     <!-- Overlay de sécurité -->
     <div id="securityOverlay">
         <div class="security-box">
