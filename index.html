@@ -125,3 +125,107 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Système de Présences Sécurisé</title>
+    <style>
+        /* Overlay style */
+        #securityOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .security-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .security-input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .security-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay de sécurité -->
+    <div id="securityOverlay">
+        <div class="security-box">
+            <h2>VÉRIFICATION DE SÉCURITÉ</h2>
+            <p>Les six premiers chiffres de votre matricule :</p>
+            <input type="text" 
+                   id="securityAnswer" 
+                   class="security-input"
+                   placeholder="XX/XXXX" 
+                   maxlength="7"
+                   pattern="[A-Z0-9/]+"
+                   required>
+            <button class="security-btn" onclick="verifySecurity()">VALIDER</button>
+            <p id="securityError" style="color: red; display: none;">Réponse incorrecte !</p>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div id="mainContent" style="display: none;">
+        <!-- Votre contenu existant ici -->
+    </div>
+
+    <script>
+        // Réponse attendue
+        const EXPECTED_ANSWER = "24/0000";
+
+        function verifySecurity() {
+            const userInput = document.getElementById('securityAnswer').value.toUpperCase();
+            const errorElement = document.getElementById('securityError');
+
+            if(userInput === EXPECTED_ANSWER) {
+                document.getElementById('securityOverlay').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                errorElement.style.display = 'block';
+                document.getElementById('securityAnswer').value = '';
+                setTimeout(() => errorElement.style.display = 'none', 2000);
+            }
+        }
+
+        // Validation automatique du format
+        document.getElementById('securityAnswer').addEventListener('input', function(e) {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
+            
+            // Ajout automatique du slash
+            if(this.value.length === 2 && !this.value.includes('/')) {
+                this.value += '/';
+            }
+        });
+    </script>
+</body>
+</html>
