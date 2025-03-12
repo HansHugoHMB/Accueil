@@ -228,3 +228,33 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPTCHA Puzzle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Overlay CAPTCHA -->
+    <div id="captcha-overlay">
+        <div class="captcha-container">
+            <p>Faites glisser la pièce pour compléter le puzzle</p>
+            <div class="captcha-box">
+                <div class="puzzle-area">
+                    <img src="background.jpg" class="captcha-bg">
+                    <div class="puzzle-piece" id="puzzle-piece"></div>
+                </div>
+                <div class="slider-container">
+                    <input type="range" id="slider" min="0" max="100">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
