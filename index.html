@@ -239,22 +239,127 @@ document.addEventListener('DOMContentLoaded', function() {
 </head>
 <body>
 
-    <!-- Overlay CAPTCHA -->
-    <div id="captcha-overlay">
-        <div class="captcha-container">
-            <p>Faites glisser la pièce pour compléter le puzzle</p>
-            <div class="captcha-box">
-                <div class="puzzle-area">
-                    <img src="background.jpg" class="captcha-bg">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="slider-container">
-                    <input type="range" id="slider" min="0" max="100">
-                </div>
-            </div>
-        </div>
+    <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPTCHA Puzzle - Drapeau RDC</title>
+  <style>
+    /* Overlay */
+    #captcha-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    /* Conteneur du CAPTCHA */
+    .captcha-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      max-width: 400px;
+      width: 90%;
+    }
+    /* Zone d'affichage des couleurs */
+    #color-container {
+      display: flex;
+      margin: 20px 0;
+    }
+    .color-block {
+      flex: 1;
+      height: 50px;
+      margin: 0 5px;
+      border: 1px solid #000;
+    }
+    /* Slider */
+    #slider {
+      width: 100%;
+      cursor: pointer;
+    }
+    /* Message de validation */
+    #message {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Overlay CAPTCHA -->
+  <div id="captcha-overlay">
+    <div class="captcha-container">
+      <h3>Réorganisez les couleurs dans l'ordre : bleu, rouge, jaune</h3>
+      <div id="color-container">
+        <div class="color-block" id="block1"></div>
+        <div class="color-block" id="block2"></div>
+        <div class="color-block" id="block3"></div>
+      </div>
+      <!-- Slider allant de 0 à 5, chaque valeur correspond à un ordre prédéfini -->
+      <input type="range" id="slider" min="0" max="5" step="1" value="3">
+      <p id="message"></p>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script>
+    // Définition des 6 permutations possibles
+    const permutations = [
+      ["blue", "red", "yellow"],       // Ordre correct
+      ["blue", "yellow", "red"],
+      ["red", "blue", "yellow"],
+      ["red", "yellow", "blue"],
+      ["yellow", "blue", "red"],
+      ["yellow", "red", "blue"]
+    ];
+
+    const slider = document.getElementById("slider");
+    const block1 = document.getElementById("block1");
+    const block2 = document.getElementById("block2");
+    const block3 = document.getElementById("block3");
+    const message = document.getElementById("message");
+
+    // Met à jour l'affichage des blocs selon la valeur du slider
+    function updateColors() {
+      const perm = permutations[slider.value];
+      block1.style.backgroundColor = perm[0];
+      block2.style.backgroundColor = perm[1];
+      block3.style.backgroundColor = perm[2];
+    }
+
+    // Initialisation
+    updateColors();
+
+    // Mise à jour en temps réel pendant le glissement
+    slider.addEventListener("input", function() {
+      updateColors();
+      message.textContent = "";
+    });
+
+    // Vérification lors du relâchement du slider
+    slider.addEventListener("change", function() {
+      if (slider.value == 0) {
+        message.textContent = "✅ CAPTCHA validé !";
+        // Masquer l'overlay après un court délai
+        setTimeout(function() {
+          document.getElementById("captcha-overlay").style.display = "none";
+        }, 500);
+      } else {
+        message.textContent = "❌ Ordre incorrect, réessayez !";
+        // Réinitialiser le slider après un délai pour permettre une nouvelle tentative
+        setTimeout(function() {
+          slider.value = 3;
+          updateColors();
+          message.textContent = "";
+        }, 1000);
+      }
+    });
+  </script>
 </body>
 </html>
