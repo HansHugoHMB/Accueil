@@ -1,59 +1,61 @@
-/* Overlay du CAPTCHA */
-#captcha-overlay {
-    position: fixed;
+.captcha-container {
+    width: 300px;
+    margin: 20px auto;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.message {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.slider-track {
+    background-color: #ddd;
+    height: 40px;
+    border-radius: 20px;
+    position: relative; /* Important pour positionner le handle */
+    overflow: hidden; /* Pour cacher la partie qui dépasse si nécessaire */
+}
+
+.slider-handle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #4CAF50; /* Couleur verte, vous pouvez changer */
+    border-radius: 50%;
+    cursor: grab; /* Indique que c'est draggable */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white; /* Couleur de l'icône si utilisée */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.slider-handle:active {
+    cursor: grabbing;
+}
+
+.validation-message {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+}
+
+/* Style pour la partie remplie du slider */
+.slider-track::before {
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-}
-
-/* Conteneur principal du CAPTCHA */
-.captcha-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-/* Zone du puzzle */
-.puzzle-area {
-    position: relative;
-    width: 300px;
-    height: 150px;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Image de fond */
-.captcha-bg {
-    width: 100%;
-    height: 100%;
-}
-
-/* Pièce du puzzle */
-.puzzle-piece {
-    position: absolute;
-    top: 40px;
-    left: 0;
-    width: 50px;
-    height: 50px;
-    background: url('puzzle-piece.png') no-repeat center;
-    background-size: contain;
-}
-
-/* Curseur de glissement */
-.slider-container {
-    margin-top: 15px;
-}
-
-#slider {
-    width: 100%;
-    cursor: pointer;
+    width: var(--slider-value, 0%); /* Utilisation d'une variable CSS pour la largeur */
+    background-color: #2196F3; /* Couleur bleue pour la partie remplie */
+    border-radius: inherit; /* Hérite du border-radius du parent */
+    z-index: -1; /* Placé derrière le handle */
 }
