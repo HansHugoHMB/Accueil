@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 /* Styles fixes pour l'en-tête */
 body {
     margin: 0;
     padding-top: 60px;
     height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif; /* Ajout d'une police de caractères par défaut */
 }
 
 .tabs-container {
@@ -14,17 +16,17 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: 50px; /* Réduction de la hauteur de l'en-tête pour mobile */
     background: linear-gradient(145deg, #87CEEB, #B0E2FF);
     z-index: 1000;
     overflow-x: auto;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Ombre plus légère */
 }
 
 .tabs-list {
     list-style: none;
     margin: 0;
-    padding: 0 20px;
+    padding: 0 10px; /* Réduction du padding horizontal */
     display: flex;
     height: 100%;
     align-items: center;
@@ -32,19 +34,19 @@ body {
 }
 
 .tab-item {
-    margin-right: 25px;
+    margin-right: 15px; /* Réduction de la marge entre les onglets */
 }
 
 .tab-link {
     text-decoration: none;
     color: #2F4F4F;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-weight: 600;
-    padding: 15px 20px;
+    font-weight: 500; /* Police un peu moins grasse */
+    padding: 10px 15px; /* Réduction du padding des liens */
     display: block;
     position: relative;
     transition: all 0.3s ease;
     border-radius: 5px;
+    font-size: 0.9em; /* Taille de police plus petite */
 }
 
 .tab-link.active {
@@ -55,20 +57,20 @@ body {
 .tab-link.active::after {
     content: '';
     position: absolute;
-    bottom: -1px;
+    bottom: 0; /* Ajustement de la position de la barre active */
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px; /* Barre active plus fine */
     background: linear-gradient(to right, #0077B5, #FFD700, #CE1126);
 }
 
 /* Contenu dans iframe */
 .content-iframe {
     position: fixed;
-    top: 60px;
+    top: 50px; /* Correspond à la nouvelle hauteur de l'en-tête */
     left: 0;
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% - 50px); /* Ajustement de la hauteur de l'iframe */
     border: none;
     z-index: 1;
 }
@@ -76,7 +78,6 @@ body {
 </head>
 <body>
 
-<!-- Section En-tête Indépendante -->
 <div class="tabs-container">
     <ul class="tabs-list">
         <li class="tab-item"><a href="https://hanshugohmb.github.io/Power-family-/" class="tab-link active">Accueil</a></li>
@@ -88,7 +89,6 @@ body {
     </ul>
 </div>
 
-<!-- Contenu Externe -->
 <iframe class="content-iframe" src="https://hanshugohmb.github.io/Power-family-/"></iframe>
 
 <script>
@@ -103,11 +103,11 @@ document.addEventListener('DOMContentLoaded', function() {
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             // Mise à jour de l'onglet actif
             links.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
-            
+
             // Chargement du contenu
             iframe.src = this.href;
         });
@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Système de Présences Sécurisé</title>
     <style>
         /* Overlay style */
@@ -145,19 +146,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .security-box {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
-            width: 400px;
+            padding: 20px; /* Réduction du padding */
+            border-radius: 8px; /* Bords un peu moins arrondis */
+            width: 80%; /* La boîte de sécurité prend une plus grande partie de l'écran sur mobile */
+            max-width: 300px; /* Limite de largeur pour les grands écrans mobiles */
             text-align: center;
         }
 
         .security-input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            font-size: 1.2em;
+            width: calc(100% - 24px); /* Ajustement de la largeur avec le padding */
+            padding: 10px; /* Réduction du padding */
+            margin: 10px 0; /* Réduction de la marge */
+            border: 1px solid #ccc; /* Bordure plus fine */
+            border-radius: 4px; /* Bords moins arrondis */
+            font-size: 1em; /* Taille de police plus petite */
             text-transform: uppercase;
             text-align: center;
             letter-spacing: 2px;
@@ -167,35 +169,32 @@ document.addEventListener('DOMContentLoaded', function() {
             background: #2196F3;
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
+            padding: 10px 20px; /* Réduction du padding */
+            border-radius: 4px; /* Bords moins arrondis */
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 0.9em; /* Taille de police plus petite */
         }
     </style>
 </head>
 <body>
-    <!-- Overlay de sécurité -->
     <div id="securityOverlay">
         <div class="security-box">
-            <h2>VÉRIFICATION DE SÉCURITÉ</h2>
-            <p>Les six premiers chiffres de votre matricule :</p>
-            <input type="text" 
-                   id="securityAnswer" 
+            <h2>VÉRIFICATION</h2>
+            <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
+            <input type="text"
+                   id="securityAnswer"
                    class="security-input"
-                   placeholder="XX/XXXX" 
+                   placeholder="XX/XXXX"
                    maxlength="7"
                    pattern="[A-Z0-9/]+"
                    required>
             <button class="security-btn" onclick="verifySecurity()">VALIDER</button>
-            <p id="securityError" style="color: red; display: none;">Réponse incorrecte !</p>
+            <p id="securityError" style="color: red; display: none; font-size: 0.8em;">Réponse incorrecte !</p>
         </div>
     </div>
 
-    <!-- Contenu principal -->
     <div id="mainContent" style="display: none;">
-        <!-- Votre contenu existant ici -->
-    </div>
+        </div>
 
     <script>
         // Réponse attendue
@@ -218,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validation automatique du format
         document.getElementById('securityAnswer').addEventListener('input', function(e) {
             this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
-            
+
             // Ajout automatique du slash
             if(this.value.length === 2 && !this.value.includes('/')) {
                 this.value += '/';
