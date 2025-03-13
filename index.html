@@ -1,27 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Votre Titre</title>
-    <style>
-        .header-image {
-            width: 100%; /* S'adapte à la largeur du conteneur parent */
-            height: auto; /* Conserve le ratio 1:1 si l'image est carrée */
-            display: block; /* Supprime l'espace supplémentaire en dessous de l'image */
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <img src="https://github.com/HansHugoHMB/Images/blob/main/Pr%C3%A9pa%20h.png?raw=true" alt="" class="header-image">
-    </header>
-
-    </body>
-    </html>
-
-<!DOCTYPE html>
-<html>
-<head>
 <style>
 /* Styles fixes pour l'en-tête */
 body {
@@ -267,5 +246,58 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="validation-message" style="display: none;">Validé !</div>
     </div>
     <script src="script.js"></script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Votre Titre</title>
+    <style>
+        body {
+            margin: 0; /* Supprime les marges par défaut du body */
+            min-height: 100vh; /* Assure que le body occupe toute la hauteur de la fenêtre */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex-grow: 1; /* Permet au contenu de remplir l'espace disponible */
+        }
+
+        .footer {
+            width: 100%;
+            position: fixed; /* Fixe le footer en bas de la fenêtre */
+            bottom: 0;
+            background-color: #f0f0f0; /* Couleur de fond optionnelle */
+            text-align: center; /* Centre le texte */
+        }
+
+        .footer-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .copyright {
+            padding: 10px; /* Ajoute un peu d'espace autour du copyright */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+        <h1>Contenu de la page</h1>
+        <p>Système de gestion des présences en ligne.</p>
+    </div>
+
+    <footer class="footer">
+        <img src="https://github.com/HansHugoHMB/Images/blob/main/Pr%C3%A9pa%20h.png?raw=true" alt="" class="footer-image">
+        <div class="copyright">
+            &copy; 2025 HMB-TECH
+        </div>
+    </footer>
+
 </body>
 </html>
