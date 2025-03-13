@@ -3,82 +3,191 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* Styles fixes pour l'en-tête */
+/* Styles fixes pour l'en-tête mobile */
 body {
     margin: 0;
-    padding-top: 60px;
-    height: 100vh;
-    font-family: 'Segoe UI', Arial, sans-serif; /* Ajout d'une police de caractères par défaut */
+    padding-top: 50px; /* Espace pour l'en-tête mobile */
+    height: auto; /* Ajuster la hauteur pour le contenu supplémentaire */
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow-x: hidden; /* Empêcher la barre de défilement horizontale */
 }
 
-.tabs-container {
+.mobile-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 50px; /* Réduction de la hauteur de l'en-tête pour mobile */
+    height: 50px;
     background: linear-gradient(145deg, #87CEEB, #B0E2FF);
     z-index: 1000;
-    overflow-x: auto;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Ombre plus légère */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centre le contenu de l'en-tête */
+    padding: 0 15px;
+}
+
+.hamburger-menu {
+    position: absolute; /* Positionne le menu à gauche */
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #2F4F4F;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 1002; /* Au-dessus de l'overlay et du menu */
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%; /* Largeur du menu (ajuster si nécessaire) */
+    height: 100%;
+    background: rgba(173, 216, 230, 0.9); /* Bleu clair transparent (ajuster la couleur et l'opacité) */
+    z-index: 1001; /* Au-dessus de l'overlay */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transform: translateX(-100%); /* Commence hors écran à gauche */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    padding-bottom: 70px; /* Espacement pour le bouton de fermeture */
+}
+
+.mobile-menu.open {
+    transform: translateX(0); /* Glisse vers l'écran */
 }
 
 .tabs-list {
     list-style: none;
-    margin: 0;
-    padding: 0 10px; /* Réduction du padding horizontal */
+    margin: 0; /* Suppression de la marge */
+    padding: 10px 0; /* Réduction du padding vertical */
     display: flex;
-    height: 100%;
-    align-items: center;
-    white-space: nowrap;
+    flex-direction: column; /* Affichage vertical des liens */
 }
 
 .tab-item {
-    margin-right: 15px; /* Réduction de la marge entre les onglets */
+    margin: 0;
 }
 
 .tab-link {
     text-decoration: none;
     color: #2F4F4F;
-    font-weight: 500; /* Police un peu moins grasse */
-    padding: 10px 15px; /* Réduction du padding des liens */
+    font-weight: 500;
+    padding: 15px 20px; /* Padding vertical un peu plus important pour le toucher */
     display: block;
-    position: relative;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    font-size: 0.9em; /* Taille de police plus petite */
+    transition: background 0.3s ease;
+    border-bottom: 1px solid #eee;
 }
 
 .tab-link.active {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 119, 181, 0.1); /* Couleur d'arrière-plan légèrement différente pour l'actif */
     color: #0077B5;
 }
 
 .tab-link.active::after {
     content: '';
     position: absolute;
-    bottom: 0; /* Ajustement de la position de la barre active */
     left: 0;
-    right: 0;
-    height: 2px; /* Barre active plus fine */
+    bottom: 0;
+    height: 2px;
+    width: 100%;
     background: linear-gradient(to right, #0077B5, #FFD700, #CE1126);
 }
 
 /* Contenu dans iframe */
 .content-iframe {
     position: fixed;
-    top: 50px; /* Correspond à la nouvelle hauteur de l'en-tête */
+    top: 50px; /* Sous l'en-tête mobile */
     left: 0;
-    width: 100%;
-    height: calc(100% - 50px); /* Ajustement de la hauteur de l'iframe */
+    width: 100%; /* L'iframe prend toute la largeur */
+    height: calc(100% - 50px);
     border: none;
     z-index: 1;
+    transition: filter 0.3s ease; /* Transition pour l'effet de flou */
+}
+
+.content-iframe.menu-open {
+    filter: blur(5px);
+}
+
+/* Style pour le texte PREPA H */
+.header-title {
+    font-weight: bold;
+    font-size: 1.8em; /* Texte plus grand */
+    /* Animation des couleurs */
+    animation: color-animation 3s infinite alternate;
+}
+
+@keyframes color-animation {
+    0% { color: #0077B5; }
+    50% { color: #FFD700; }
+    100% { color: #CE1126; }
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent noir */
+    z-index: 999; /* Entre l'iframe et le menu */
+    display: none;
+    transition: opacity 0.3s ease-in-out;
+    border: 5px solid transparent; /* Initial transparent border */
+    animation: border-animation 10s linear infinite; /* Apply animation */
+}
+
+.menu-overlay.open {
+    display: block;
+    opacity: 1;
+}
+
+@keyframes border-animation {
+    0% { border-image: linear-gradient(to right, blue, yellow, red, blue) 1; border-image-slice: 1; }
+    25% { border-image: linear-gradient(to right, yellow, red, blue, yellow) 1; border-image-slice: 1; }
+    50% { border-image: linear-gradient(to right, red, blue, yellow, red) 1; border-image-slice: 1; }
+    75% { border-image: linear-gradient(to right, blue, yellow, red, blue) 1; border-image-slice: 1; }
+    100% { border-image: linear-gradient(to right, yellow, red, blue, yellow) 1; border-image-slice: 1; }
+}
+
+.close-menu-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    z-index: 1002;
+}
+
+.fingerprint-icon {
+    width: 40px; /* Ajuster la taille si nécessaire */
+    height: 40px; /* Ajuster la taille si nécessaire */
+    background-image: url('fingerprint.png'); /* Remplacer par le chemin de votre icône d'empreinte digitale */
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7; /* Ajuster l'opacité si nécessaire */
+}
+
+.fingerprint-icon:hover {
+    opacity: 1;
 }
 </style>
 </head>
 <body>
 
-<div class="tabs-container">
+<div class="mobile-header">
+    <button class="hamburger-menu" onclick="toggleMobileMenu()">☰</button>
+    <span class="header-title">PRÉPA H</span>
+</div>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div class="mobile-menu" id="mobileMenu">
     <ul class="tabs-list">
         <li class="tab-item"><a href="https://hanshugohmb.github.io/Power-family-/" class="tab-link active">Accueil</a></li>
         <li class="tab-item"><a href="https://ista.optsolution.net/forms" class="tab-link">Actualités</a></li>
@@ -87,38 +196,48 @@ body {
         <li class="tab-item"><a href="https://mbayamuambahans.home.blog" class="tab-link">Galerie</a></li>
         <li class="tab-item"><a href="https://hanshugohmb.github.io/Baya-s-Family-/index.html" class="tab-link">Contact</a></li>
     </ul>
+    <div class="close-menu-btn fingerprint-icon" onclick="toggleMobileMenu()"></div>
 </div>
 
-<iframe class="content-iframe" src="https://hanshugohmb.github.io/Power-family-/"></iframe>
+<iframe class="content-iframe" id="contentFrame" src="https://hanshugohmb.github.io/Power-family-/"></iframe>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const links = document.querySelectorAll('.tab-link');
-    const iframe = document.querySelector('.content-iframe');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const contentFrame = document.getElementById('contentFrame');
+    const menuLinks = mobileMenu.querySelectorAll('.tab-link');
+    const body = document.body;
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    function toggleMobileMenu() {
+        mobileMenu.classList.toggle('open');
+        menuOverlay.classList.toggle('open');
+        contentFrame.classList.toggle('menu-open'); // Appliquer le flou à l'iframe
+    }
+
+    // Fermer le menu en cliquant sur l'overlay
+    menuOverlay.addEventListener('click', toggleMobileMenu);
 
     // Chargement initial
-    iframe.src = document.querySelector('.tab-link.active').href;
+    contentFrame.src = mobileMenu.querySelector('.tab-link.active').href;
 
-    // Gestion des clics
-    links.forEach(link => {
+    // Gestion des clics dans le menu mobile
+    menuLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
 
             // Mise à jour de l'onglet actif
-            links.forEach(l => l.classList.remove('active'));
+            menuLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
 
-            // Chargement du contenu
-            iframe.src = this.href;
+            // Chargement du contenu dans l'iframe
+            contentFrame.src = this.href;
+
+            // Fermer le menu après avoir cliqué sur un lien
+            mobileMenu.classList.remove('open');
+            menuOverlay.classList.remove('open');
+            contentFrame.classList.remove('menu-open'); // Retirer le flou
         });
     });
-
-    // Synchronisation avec l'historique
-    window.addEventListener('popstate', () => {
-        const activeLink = document.querySelector('.tab-link.active');
-        iframe.src = activeLink.href;
-    });
-});
 </script>
 
 </body>
@@ -141,38 +260,28 @@ document.addEventListener('DOMContentLoaded', function() {
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 1002; /* Au-dessus du menu mobile et de l'overlay */
         }
 
         .security-box {
             background: white;
-            padding: 20px; /* Réduction du padding */
-            border-radius: 8px; /* Bords un peu moins arrondis */
-            width: 80%; /* La boîte de sécurité prend une plus grande partie de l'écran sur mobile */
-            max-width: 300px; /* Limite de largeur pour les grands écrans mobiles */
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 300px;
             text-align: center;
         }
 
         .security-input {
-            width: calc(100% - 24px); /* Ajustement de la largeur avec le padding */
-            padding: 10px; /* Réduction du padding */
-            margin: 10px 0; /* Réduction de la marge */
-            border: 1px solid #ccc; /* Bordure plus fine */
-            border-radius: 4px; /* Bords moins arrondis */
-            font-size: 1em; /* Taille de police plus petite */
+            width: calc(100% - 24px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
             text-transform: uppercase;
             text-align: center;
             letter-spacing: 2px;
-        }
-
-        .security-btn {
-            background: #2196F3;
-            color: white;
-            border: none;
-            padding: 10px 20px; /* Réduction du padding */
-            border-radius: 4px; /* Bords moins arrondis */
-            cursor: pointer;
-            font-size: 0.9em; /* Taille de police plus petite */
         }
     </style>
 </head>
@@ -188,7 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
                    maxlength="7"
                    pattern="[A-Z0-9/]+"
                    required>
-            <button class="security-btn" onclick="verifySecurity()">VALIDER</button>
             <p id="securityError" style="color: red; display: none; font-size: 0.8em;">Réponse incorrecte !</p>
         </div>
     </div>
@@ -199,14 +307,14 @@ document.addEventListener('DOMContentLoaded', function() {
     <script>
         // Réponse attendue
         const EXPECTED_ANSWER = "24/0000";
+        const securityOverlay = document.getElementById('securityOverlay');
 
         function verifySecurity() {
             const userInput = document.getElementById('securityAnswer').value.toUpperCase();
             const errorElement = document.getElementById('securityError');
 
             if(userInput === EXPECTED_ANSWER) {
-                document.getElementById('securityOverlay').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
+                securityOverlay.style.display = 'none';
             } else {
                 errorElement.style.display = 'block';
                 document.getElementById('securityAnswer').value = '';
@@ -214,13 +322,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Validation automatique du format
+        // Validation automatique du format et vérification
         document.getElementById('securityAnswer').addEventListener('input', function(e) {
             this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
 
             // Ajout automatique du slash
             if(this.value.length === 2 && !this.value.includes('/')) {
                 this.value += '/';
+            }
+
+            // Vérification automatique si la longueur du code est atteinte
+            if (this.value.length === 7) {
+                verifySecurity();
             }
         });
     </script>
