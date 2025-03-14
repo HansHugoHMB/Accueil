@@ -6,7 +6,7 @@
 /* Styles fixes pour l'en-tête mobile */
 body {
     margin: 0;
-    padding-top: 50px; /* Espace pour l'en-tête mobile */
+    padding-top: 99px; /* Espace pour l'en-tête mobile (ajusté) */
     height: auto; /* Ajuster la hauteur pour le contenu supplémentaire */
     font-family: 'Segoe UI', Arial, sans-serif;
     overflow-x: hidden; /* Empêcher la barre de défilement horizontale */
@@ -17,7 +17,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 50px;
+    height: 99px; /* Environ 2 cm + 6 mm */
     background: linear-gradient(145deg, #87CEEB, #B0E2FF);
     z-index: 1000;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -98,10 +98,10 @@ body {
 /* Contenu dans iframe */
 .content-iframe {
     position: fixed;
-    top: 50px; /* Sous l'en-tête mobile */
+    top: 99px; /* Sous l'en-tête mobile (ajusté) */
     left: 0;
     width: 100%; /* L'iframe prend toute la largeur */
-    height: calc(100% - 50px);
+    height: calc(100% - 99px); /* Ajuster la hauteur de l'iframe */
     border: none;
     z-index: 1;
     transition: filter 0.3s ease; /* Transition pour l'effet de flou */
@@ -176,13 +176,57 @@ body {
 .fingerprint-icon:hover {
     opacity: 1;
 }
+
+.menu-image-right {
+    position: absolute;
+    top: 10px; /* Ajuster la position verticale si nécessaire */
+    right: 10px; /* Ajuster la position horizontale si nécessaire */
+    width: 80px; /* Ajuster la largeur si nécessaire */
+    height: auto;
+    z-index: 1003; /* S'assurer qu'elle est au-dessus des autres éléments du menu */
+}
+
+/* Overlay style */
+#securityOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002; /* Au-dessus du menu mobile et de l'overlay */
+}
+
+.security-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.security-input {
+    width: calc(100% - 24px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+}
 </style>
 </head>
 <body>
 
-<div class="mobile-header">
+<div class="mobile-header" style="height: 99px;">
     <button class="hamburger-menu" onclick="toggleMobileMenu()">☰</button>
-    <span class="header-title">PRÉPA H</span>
+    <span class="header-title">PRÉPA H25</span><img src="https://github.com/HansHugoHMB/Images/blob/main/Pr%C3%A9pa%20h.png?raw=true" alt="Prépa H" class="menu-image-right">
 </div>
 
 <div class="menu-overlay" id="menuOverlay"></div>
@@ -196,10 +240,11 @@ body {
         <li class="tab-item"><a href="https://mbayamuambahans.home.blog" class="tab-link">Galerie</a></li>
         <li class="tab-item"><a href="https://hanshugohmb.github.io/Baya-s-Family-/index.html" class="tab-link">Contact</a></li>
     </ul>
+    
     <div class="close-menu-btn fingerprint-icon" onclick="toggleMobileMenu()"></div>
 </div>
 
-<iframe class="content-iframe" id="contentFrame" src="https://hanshugohmb.github.io/Power-family-/"></iframe>
+<iframe class="content-iframe" id="contentFrame" src="https://hanshugohmb.github.io/Power-family-/" style="top: 99px; height: calc(100% - 99px);"></iframe>
 
 <script>
     const mobileMenu = document.getElementById('mobileMenu');
@@ -240,102 +285,57 @@ body {
     });
 </script>
 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Système de Présences Sécurisé</title>
-    <style>
-        /* Overlay style */
-        #securityOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1002; /* Au-dessus du menu mobile et de l'overlay */
-        }
+<div id="securityOverlay">
+    <div class="security-box">
+        <h2>VÉRIFICATION</h2>
+        <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
+        <input type="text"
+               id="securityAnswer"
+               class="security-input"
+               placeholder="XX/XXXX"
+               maxlength="7"
+               pattern="[A-Z0-9/]+"
+               required>
+        <p id="securityError" style="color: blue ; display: none; font-size: 0.9em;">Réponse incorrect !!</p>
+    </div>
+</div>
 
-        .security-box {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 300px;
-            text-align: center;
-        }
-
-        .security-input {
-            width: calc(100% - 24px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1em;
-            text-transform: uppercase;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-    </style>
-</head>
-<body>
-    <div id="securityOverlay">
-        <div class="security-box">
-            <h2>VÉRIFICATION</h2>
-            <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
-            <input type="text"
-                   id="securityAnswer"
-                   class="security-input"
-                   placeholder="XX/XXXX"
-                   maxlength="7"
-                   pattern="[A-Z0-9/]+"
-                   required>
-            <p id="securityError" style="color: red; display: none; font-size: 0.8em;">Réponse incorrecte !</p>
-        </div>
+<div id="mainContent" style="display: none;">
     </div>
 
-    <div id="mainContent" style="display: none;">
-        </div>
+<script>
+    // Réponse attendue
+    const EXPECTED_ANSWER = "24/0000";
+    const securityOverlay = document.getElementById('securityOverlay');
 
-    <script>
-        // Réponse attendue
-        const EXPECTED_ANSWER = "24/0000";
-        const securityOverlay = document.getElementById('securityOverlay');
+    function verifySecurity() {
+        const userInput = document.getElementById('securityAnswer').value.toUpperCase();
+        const errorElement = document.getElementById('securityError');
 
-        function verifySecurity() {
-            const userInput = document.getElementById('securityAnswer').value.toUpperCase();
-            const errorElement = document.getElementById('securityError');
+        if(userInput === EXPECTED_ANSWER) {
+            securityOverlay.style.display = 'none';
+        } else {
+            errorElement.style.display = 'block';
+            document.getElementById('securityAnswer').value = '';
+            setTimeout(() => errorElement.style.display = 'none', 2000);
+        }
+    }
 
-            if(userInput === EXPECTED_ANSWER) {
-                securityOverlay.style.display = 'none';
-            } else {
-                errorElement.style.display = 'block';
-                document.getElementById('securityAnswer').value = '';
-                setTimeout(() => errorElement.style.display = 'none', 2000);
-            }
+    // Validation automatique du format et vérification
+    document.getElementById('securityAnswer').addEventListener('input', function(e) {
+        this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
+
+        // Ajout automatique du slash
+        if(this.value.length === 2 && !this.value.includes('/')) {
+            this.value += '/';
         }
 
-        // Validation automatique du format et vérification
-        document.getElementById('securityAnswer').addEventListener('input', function(e) {
-            this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
+        // Vérification automatique si la longueur du code est atteinte
+        if (this.value.length === 7) {
+            verifySecurity();
+        }
+    });
+</script>
 
-            // Ajout automatique du slash
-            if(this.value.length === 2 && !this.value.includes('/')) {
-                this.value += '/';
-            }
-
-            // Vérification automatique si la longueur du code est atteinte
-            if (this.value.length === 7) {
-                verifySecurity();
-            }
-        });
-    </script>
 </body>
 </html>
