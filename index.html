@@ -1,341 +1,344 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-/* Styles fixes pour l'en-tête mobile */
-body {
-    margin: 0;
-    padding-top: 99px; /* Espace pour l'en-tête mobile (ajusté) */
-    height: auto; /* Ajuster la hauteur pour le contenu supplémentaire */
-    font-family: 'Segoe UI', Arial, sans-serif;
-    overflow-x: hidden; /* Empêcher la barre de défilement horizontale */
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* --- Global reset / base --- */
+    body {
+      margin: 0;
+      padding-top: 99px; /* Reserve space for the fixed header */
+      height: auto;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+    }
 
-.mobile-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 99px; /* Environ 2 cm + 6 mm */
-    background: linear-gradient(145deg, #87CEEB, #B0E2FF);
-    z-index: 1000;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centre le contenu de l'en-tête */
-    padding: 0 15px;
-}
+    /* --- Header Container --- */
+    .mobile-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 99px;
+      background-color: #0D1C40; /* Navy color */
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      justify-content: space-between; /* Distribute space between elements */
+    }
 
-.hamburger-menu {
-    position: absolute; /* Positionne le menu à gauche */
-    left: 15px;
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    color: #2F4F4F;
-    cursor: pointer;
-    padding: 5px;
-    z-index: 1002; /* Au-dessus de l'overlay et du menu */
-}
+    /* Seal on the far left */
+    .header-seal {
+      width: 40px;
+      height: auto;
+      margin-right: 10px;
+    }
 
-.mobile-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 80%; /* Largeur du menu (ajuster si nécessaire) */
-    height: 100%;
-    background: rgba(173, 216, 230, 0.9); /* Bleu clair transparent (ajuster la couleur et l'opacité) */
-    z-index: 1001; /* Au-dessus de l'overlay */
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    transform: translateX(-100%); /* Commence hors écran à gauche */
-    transition: transform 0.3s ease-in-out;
-    overflow-y: auto;
-    padding-bottom: 70px; /* Espacement pour le bouton de fermeture */
-}
+    /* Title text in the center */
+    .header-title {
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.6em; /* Further increased font size */
+      text-align: center;
+      margin: 0; /* Remove auto margin to allow centering with flexbox */
+      line-height: 1.2em;
+      flex-grow: 1; /* Allow title to take up available space */
+    }
 
-.mobile-menu.open {
-    transform: translateX(0); /* Glisse vers l'écran */
-}
+    /* Digi image on the far right */
+    .header-digi {
+      height: auto;
+      max-height: 76px; /* Increased maximum height */
+      margin-left: 10px; /* Add some spacing to the left */
+      filter: brightness(0) invert(1); /* Make black pixels white */
+    }
 
-.tabs-list {
-    list-style: none;
-    margin: 0; /* Suppression de la marge */
-    padding: 10px 0; /* Réduction du padding vertical */
-    display: flex;
-    flex-direction: column; /* Affichage vertical des liens */
-}
+    /* --- Hamburger Menu Button --- */
+    .hamburger-menu {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      color: #fff;
+      cursor: pointer;
+      padding: 0 10px; /* Adjusted padding to control vertical alignment */
+      margin-left: 15px; /* Slightly increased left margin */
+      order: -1; /* Move hamburger menu to the start */
+      display: flex; /* Enable flexbox for centering */
+      flex-direction: column; /* Stack the lines vertically */
+      justify-content: center; /* Center vertically */
+      align-items: center; /* Center horizontally (optional, but good practice) */
+      height: 100%; /* Make the button take full height for proper centering */
+    }
+    /* White lines icon instead of “☰” text */
+    .hamburger-menu::before {
+      content: "";
+      display: inline-block;
+      width: 25px;
+      height: 2px;
+      background: #fff;
+      box-shadow: 0 6px 0 #fff, 0 12px 0 #fff; /* 3 white lines */
+    }
 
-.tab-item {
-    margin: 0;
-}
+    /* --- The overlay that blurs content behind the menu --- */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(5px); /* Blur behind the menu */
+      background-color: rgba(0,0,0,0.2);
+      z-index: 999;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .menu-overlay.open {
+      display: block;
+      opacity: 1;
+    }
 
-.tab-link {
-    text-decoration: none;
-    color: #2F4F4F;
-    font-weight: 500;
-    padding: 15px 20px; /* Padding vertical un peu plus important pour le toucher */
-    display: block;
-    transition: background 0.3s ease;
-    border-bottom: 1px solid #eee;
-}
+    /* --- Slide-out Mobile Menu (now a smaller panel) --- */
+    .mobile-menu {
+      position: fixed;
+      top: 10px;   /* Small gap from the top */
+      left: 10px;  /* Small gap from the left */
+      width: 250px;
+      min-height: 80vh;
+      background-color: #0D1C40; /* Same as header color */
+      z-index: 1001;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+      transform: translateX(-150%) rotate(-10deg); /* Start further out and rotated */
+      opacity: 0;
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Changed transition speed to 0.5s */
+      overflow-y: auto;
+      border-radius: 10px; /* Rounded corners */
+      padding: 20px;       /* Some spacing inside */
+    }
+    .mobile-menu.open {
+      transform: translateX(0) rotate(0deg);
+      opacity: 1;
+    }
 
-.tab-link.active {
-    background: rgba(0, 119, 181, 0.1); /* Couleur d'arrière-plan légèrement différente pour l'actif */
-    color: #0077B5;
-}
+    /* Close button (×) inside the menu, top-right corner */
+    .close-menu-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(255, 255, 255, 0.1); /* Light background for circle */
+      color: #fff;
+      font-size: 1.5em; /* Increased font size */
+      cursor: pointer;
+      border: none;
+      border-radius: 50%; /* Make it a circle */
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 0.8; /* Adjust line height for better centering */
+    }
+    .close-menu-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #ccc;
+    }
 
-.tab-link.active::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 100%;
-    background: linear-gradient(to right, #0077B5, #FFD700, #CE1126);
-}
+    /* Tabs List */
+    .tabs-list {
+      list-style: none;
+      margin: 0;
+      padding: 40px 0 0; /* Adjust top padding for the larger close button */
+      display: flex;
+      flex-direction: column;
+    }
 
-/* Contenu dans iframe */
-.content-iframe {
-    position: fixed;
-    top: 99px; /* Sous l'en-tête mobile (ajusté) */
-    left: 0;
-    width: 100%; /* L'iframe prend toute la largeur */
-    height: calc(100% - 99px); /* Ajuster la hauteur de l'iframe */
-    border: none;
-    z-index: 1;
-    transition: filter 0.3s ease; /* Transition pour l'effet de flou */
-}
+    .tab-item {
+      margin: 0;
+    }
 
-.content-iframe.menu-open {
-    filter: blur(5px);
-}
+    .tab-link {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      padding: 10px 0;
+      display: block;
+      transition: background 0.3s ease;
+    }
+    .tab-link:hover {
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding-left: 10px;
+    }
+    .tab-link.active {
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
+    }
 
-/* Style pour le texte PREPA H */
-.header-title {
-    font-weight: bold;
-    font-size: 1.8em; /* Texte plus grand */
-    /* Animation des couleurs */
-    animation: color-animation 3s infinite alternate;
-}
+    /* --- Iframe Content --- */
+    .content-iframe {
+      position: fixed;
+      top: 99px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 99px);
+      border: none;
+      z-index: 1;
+      transition: filter 0.3s ease;
+    }
 
-@keyframes color-animation {
-    0% { color: #0077B5; }
-    50% { color: #FFD700; }
-    100% { color: #CE1126; }
-}
-
-.menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent noir */
-    z-index: 999; /* Entre l'iframe et le menu */
-    display: none;
-    transition: opacity 0.3s ease-in-out;
-    border: 5px solid transparent; /* Initial transparent border */
-    animation: border-animation 10s linear infinite; /* Apply animation */
-}
-
-.menu-overlay.open {
-    display: block;
-    opacity: 1;
-}
-
-@keyframes border-animation {
-    0% { border-image: linear-gradient(to right, blue, yellow, red, blue) 1; border-image-slice: 1; }
-    25% { border-image: linear-gradient(to right, yellow, red, blue, yellow) 1; border-image-slice: 1; }
-    50% { border-image: linear-gradient(to right, red, blue, yellow, red) 1; border-image-slice: 1; }
-    75% { border-image: linear-gradient(to right, blue, yellow, red, blue) 1; border-image-slice: 1; }
-    100% { border-image: linear-gradient(to right, yellow, red, blue, yellow) 1; border-image-slice: 1; }
-}
-
-.close-menu-btn {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px 20px;
-    z-index: 1002;
-}
-
-.fingerprint-icon {
-    width: 40px; /* Ajuster la taille si nécessaire */
-    height: 40px; /* Ajuster la taille si nécessaire */
-    background-image: url('fingerprint.png'); /* Remplacer par le chemin de votre icône d'empreinte digitale */
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.7; /* Ajuster l'opacité si nécessaire */
-}
-
-.fingerprint-icon:hover {
-    opacity: 1;
-}
-
-.menu-image-right {
-    position: absolute;
-    top: 10px; /* Ajuster la position verticale si nécessaire */
-    right: 10px; /* Ajuster la position horizontale si nécessaire */
-    width: 80px; /* Ajuster la largeur si nécessaire */
-    height: auto;
-    z-index: 1003; /* S'assurer qu'elle est au-dessus des autres éléments du menu */
-}
-
-/* Overlay style */
-#securityOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1002; /* Au-dessus du menu mobile et de l'overlay */
-}
-
-.security-box {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 300px;
-    text-align: center;
-}
-
-.security-input {
-    width: calc(100% - 24px);
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 2px;
-}
-</style>
+    /* --- Security Overlay --- */
+    #securityOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1002;
+    }
+    .security-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 300px;
+      text-align: center;
+    }
+    .security-input {
+      width: calc(100% - 24px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    #securityError {
+      color: blue;
+      display: none;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
 
-<div class="mobile-header" style="height: 99px;">
-    <button class="hamburger-menu" onclick="toggleMobileMenu()">☰</button>
-    <span class="header-title">PRÉPA H25</span><img src="https://github.com/HansHugoHMB/Images/blob/main/Pr%C3%A9pa%20h.png?raw=true" alt="Prépa H" class="menu-image-right">
-</div>
+  <div class="mobile-header">
+    <button class="hamburger-menu" onclick="toggleMobileMenu()"></button>
 
-<div class="menu-overlay" id="menuOverlay"></div>
+    <span class="header-title">
+      PRÉPA H25
+    </span>
 
-<div class="mobile-menu" id="mobileMenu">
+    <img src="https://github.com/HansHugoHMB/Images/blob/main/Pr%C3%A9pa%20h.png?raw=true"
+         alt="Digi"
+         class="header-digi">
+  </div>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu-btn" onclick="toggleMobileMenu()">×</button>
+
     <ul class="tabs-list">
-        <li class="tab-item"><a href="https://hanshugohmb.github.io/Power-family-/" class="tab-link active">Accueil</a></li>
-        <li class="tab-item"><a href="https://ista.optsolution.net/forms" class="tab-link">Actualités</a></li>
-        <li class="tab-item"><a href="https://hanshugohmb.github.io/Baya-s-Family-/index.html" class="tab-link">Messages</a></li>
-        <li class="tab-item"><a href="https://schoolap.cd/a-s0I62WD3707?fbclid=IwY2xjawI-XO1leHRuA2FlbQIxMQABHSaTpz6xLFYfOTm-346X2xWK7A3azBHeI-iFODrWdvd8mby8QsXBvuI0Rg_aem_GJRXl4_hTVnnYBIKOxSnxg" class="tab-link">Payements</a></li>
-        <li class="tab-item"><a href="https://mbayamuambahans.home.blog" class="tab-link">Galerie</a></li>
-        <li class="tab-item"><a href="https://hanshugohmb.github.io/Baya-s-Family-/index.html" class="tab-link">Contact</a></li>
+      <li class="tab-item"><a href="https://hanshugohmb.github.io/Power-family-/" class="tab-link active">Accueil</a></li>
+      <li class="tab-item"><a href="https://ista.optsolution.net/forms" class="tab-link">Actualités</a></li>
+      <li class="tab-item"><a href="https://hanshugohmb.github.io/Baya-s-Family-/index.html" class="tab-link">Messages</a></li>
+      <li class="tab-item"><a href="https://schoolap.cd/a-s0I62WD3707" class="tab-link">Payements</a></li>
+      <li class="tab-item"><a href="https://mbayamuambahans.home.blog" class="tab-link">Galerie</a></li>
+      <li class="tab-item"><a href="https://hanshugohmb.github.io/Baya-s-Family-/index.html" class="tab-link">Contact</a></li>
     </ul>
-    
-    <div class="close-menu-btn fingerprint-icon" onclick="toggleMobileMenu()"></div>
-</div>
+  </div>
 
-<iframe class="content-iframe" id="contentFrame" src="https://hanshugohmb.github.io/Power-family-/" style="top: 99px; height: calc(100% - 99px);"></iframe>
+  <iframe class="content-iframe" id="contentFrame"
+          src="https://hanshugohmb.github.io/Power-family-/">
+  </iframe>
 
-<script>
-    const mobileMenu = document.getElementById('mobileMenu');
+  <script>
+    const mobileMenu   = document.getElementById('mobileMenu');
     const contentFrame = document.getElementById('contentFrame');
-    const menuLinks = mobileMenu.querySelectorAll('.tab-link');
-    const body = document.body;
-    const menuOverlay = document.getElementById('menuOverlay');
+    const menuOverlay  = document.getElementById('menuOverlay');
+    const menuLinks    = mobileMenu.querySelectorAll('.tab-link');
 
     function toggleMobileMenu() {
-        mobileMenu.classList.toggle('open');
-        menuOverlay.classList.toggle('open');
-        contentFrame.classList.toggle('menu-open'); // Appliquer le flou à l'iframe
+      mobileMenu.classList.toggle('open');
+      menuOverlay.classList.toggle('open');
+      // Optionally blur the iframe:
+      // contentFrame.classList.toggle('menu-open');
     }
 
-    // Fermer le menu en cliquant sur l'overlay
+    // Close menu by clicking overlay
     menuOverlay.addEventListener('click', toggleMobileMenu);
 
-    // Chargement initial
+    // Load initial content in iframe
     contentFrame.src = mobileMenu.querySelector('.tab-link.active').href;
 
-    // Gestion des clics dans le menu mobile
+    // Handle clicks in the mobile menu
     menuLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            // Mise à jour de l'onglet actif
-            menuLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-
-            // Chargement du contenu dans l'iframe
-            contentFrame.src = this.href;
-
-            // Fermer le menu après avoir cliqué sur un lien
-            mobileMenu.classList.remove('open');
-            menuOverlay.classList.remove('open');
-            contentFrame.classList.remove('menu-open'); // Retirer le flou
-        });
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Update active tab
+        menuLinks.forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+        // Load content in iframe
+        contentFrame.src = this.href;
+        // Close the menu
+        toggleMobileMenu();
+      });
     });
-</script>
+  </script>
 
-<div id="securityOverlay">
+  <div id="securityOverlay">
     <div class="security-box">
-        <h2>VÉRIFICATION</h2>
-        <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
-        <input type="text"
-               id="securityAnswer"
-               class="security-input"
-               placeholder="XX/XXXX"
-               maxlength="7"
-               pattern="[A-Z0-9/]+"
-               required>
-        <p id="securityError" style="color: blue ; display: none; font-size: 0.9em;">Réponse incorrect !!</p>
+      <h2>VÉRIFICATION</h2>
+      <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
+      <input type="text"
+             id="securityAnswer"
+             class="security-input"
+             placeholder="XX/XXXX"
+             maxlength="7"
+             pattern="[A-Z0-9/]+"
+             required>
+      <p id="securityError">Réponse incorrect !!</p>
     </div>
-</div>
+  </div>
 
-<div id="mainContent" style="display: none;">
-    </div>
-
-<script>
-    // Réponse attendue
+  <script>
+    // Security check
     const EXPECTED_ANSWER = "24/0000";
     const securityOverlay = document.getElementById('securityOverlay');
 
     function verifySecurity() {
-        const userInput = document.getElementById('securityAnswer').value.toUpperCase();
-        const errorElement = document.getElementById('securityError');
+      const userInput = document.getElementById('securityAnswer').value.toUpperCase();
+      const errorElement = document.getElementById('securityError');
 
-        if(userInput === EXPECTED_ANSWER) {
-            securityOverlay.style.display = 'none';
-        } else {
-            errorElement.style.display = 'block';
-            document.getElementById('securityAnswer').value = '';
-            setTimeout(() => errorElement.style.display = 'none', 2000);
-        }
+      if(userInput === EXPECTED_ANSWER) {
+        securityOverlay.style.display = 'none';
+      } else {
+        errorElement.style.display = 'block';
+        document.getElementById('securityAnswer').value = '';
+        setTimeout(() => errorElement.style.display = 'none', 2000);
+      }
     }
 
-    // Validation automatique du format et vérification
-    document.getElementById('securityAnswer').addEventListener('input', function(e) {
-        this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
-
-        // Ajout automatique du slash
-        if(this.value.length === 2 && !this.value.includes('/')) {
-            this.value += '/';
-        }
-
-        // Vérification automatique si la longueur du code est atteinte
-        if (this.value.length === 7) {
-            verifySecurity();
-        }
+    // Auto-format + verify
+    document.getElementById('securityAnswer').addEventListener('input', function() {
+      this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
+      // Auto-add slash after 2 chars
+      if(this.value.length === 2 && !this.value.includes('/')) {
+        this.value += '/';
+      }
+      // If length is reached, verify
+      if (this.value.length === 7) {
+        verifySecurity();
+      }
     });
-</script>
-
+  </script>
 </body>
 </html>
