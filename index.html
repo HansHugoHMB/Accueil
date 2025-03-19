@@ -295,7 +295,20 @@
   </script>
 
   <div id="securityOverlay">
-    <div class="security-box" style="background: #0D1C40; padding: 20px; border-radius: 8px; width: 80%; max-width: 300px; text-align: center; color: white; border: 3px solid yellow; outline: 3px solid red;">
+    <div class="security-box" style="background: #0D1C40; padding: 20px; border-radius: 8px; width: 80%; max-width: 300px; text-align: center; color: white; border: 3px solid yellow; outline: 3px solid red; animation: rotateYellow 2s linear infinite, rotateRed 2s linear infinite;">
+<style>
+  /* ... autres styles ... */
+  @keyframes rotateYellow {
+    0% { border-color: yellow; }
+    100% { border-color: red; }
+  }
+
+  @keyframes rotateRed {
+    0% { outline-color: red; }
+    100% { outline-color: yellow; }
+  }
+  /* ... autres styles ... */
+</style>
       <h2>VÉRIFICATION</h2>
       <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
       <input type="text"
