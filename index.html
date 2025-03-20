@@ -72,26 +72,26 @@
   height: auto; /* La hauteur s'ajustera au contenu */
 }
 
-.hamburger-menu span {
-  display: block;
-  background-color: white; /* Couleur blanche */
-  border-radius: 10px; /* Bordures arrondies */
-  height: 4px; /* Ajustez l'épaisseur des barres */
-  margin-bottom: 2.5px; /* Espacement entre les barres */
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Pour les animations futures */
+.mobile-header .hamburger-menu span {
+  display: block !important; /* Force l'affichage */
+  background-color: white !important; /* Force la couleur blanche */
+  border-radius: 10px;
+  height: 4px;
+  margin-bottom: 2.5px;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.hamburger-menu span:first-child {
-  width: 30px; /* Première barre : 30px */
+.mobile-header .hamburger-menu span:first-child {
+  width: 30px;
 }
 
-.hamburger-menu span:nth-child(2) {
-  width: 22.5px; /* Deuxième barre : 75% de 30px */
+.mobile-header .hamburger-menu span:nth-child(2) {
+  width: 22.5px;
 }
 
-.hamburger-menu span:last-child {
-  width: 15px; /* Troisième barre : 50% de 30px */
-  margin-bottom: 0; /* Pas de marge en bas pour la dernière barre */
+.mobile-header .hamburger-menu span:last-child {
+  width: 15px;
+  margin-bottom: 0;
 }
 
 .hamburger-menu.open span {
