@@ -47,40 +47,56 @@
       flex-grow: 1; /* Allow title to take up available space */
     }
 
-    /* Digi image on the far right */
     .header-digi {
-      height: auto;
-      max-height: 76px; /* Increased maximum height */
-      margin-left: 10px; /* Add some spacing to the left */
-      filter: brightness(0) invert(1); /* Make black pixels white */
-    }
+  height: auto;
+  max-height: 76px; /* Increased maximum height */
+  margin-left: 10px; /* Add some spacing to the left */
+  filter: brightness(0) invert(1); /* Make black pixels white */
+  width: auto; /* Laisser la largeur s'ajuster à l'image */
+  min-width: 76px; /* Réserver une largeur minimale basée sur la hauteur max (ou la largeur réelle de l'image) */
+  flex-shrink: 0; /* Empêcher l'image de rétrécir */
+}
+    /* --- Hamburger Menu Button (Nouveau style) --- */
+.hamburger-menu {
+  background: none; /* Fond neutre */
+  border: none;
+  cursor: pointer;
+  padding: 10px; /* Ajustez le padding selon vos besoins */
+  margin-left: 15px; /* Conservez ou ajustez la marge gauche */
+  order: -1; /* Conservez la position à gauche */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centre les barres verticalement dans le bouton */
+  align-items: flex-start; /* Aligne les barres à gauche */
+  width: 36px; /* Ajustez la largeur du bouton pour contenir 30px */
+  height: auto; /* La hauteur s'ajustera au contenu */
+}
 
-    /* --- Hamburger Menu Button --- */
-    .hamburger-menu {
-      background: none;
-      border: none;
-      font-size: 1.5em;
-      color: #fff;
-      cursor: pointer;
-      padding: 0 10px; /* Adjusted padding to control vertical alignment */
-      margin-left: 15px; /* Slightly increased left margin */
-      order: -1; /* Move hamburger menu to the start */
-      display: flex; /* Enable flexbox for centering */
-      flex-direction: column; /* Stack the lines vertically */
-      justify-content: center; /* Center vertically */
-      align-items: center; /* Center horizontally (optional, but good practice) */
-      height: 100%; /* Make the button take full height for proper centering */
-    }
-    /* White lines icon instead of “☰” text */
-    .hamburger-menu::before {
-      content: "";
-      display: inline-block;
-      width: 25px;
-      height: 2px;
-      background: #fff;
-      box-shadow: 0 6px 0 #fff, 0 12px 0 #fff; /* 3 white lines */
-    }
+.hamburger-menu span {
+  display: block;
+  background-color: white; /* Couleur blanche */
+  border-radius: 10px; /* Bordures arrondies */
+  height: 4px; /* Ajustez l'épaisseur des barres */
+  margin-bottom: 2.5px; /* Espacement entre les barres */
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Pour les animations futures */
+}
 
+.hamburger-menu span:first-child {
+  width: 30px; /* Première barre : 30px */
+}
+
+.hamburger-menu span:nth-child(2) {
+  width: 22.5px; /* Deuxième barre : 75% de 30px */
+}
+
+.hamburger-menu span:last-child {
+  width: 15px; /* Troisième barre : 50% de 30px */
+  margin-bottom: 0; /* Pas de marge en bas pour la dernière barre */
+}
+
+.hamburger-menu.open span {
+  /* Styles pour l'état ouvert (si vous en avez) */
+}
     /* --- The overlay that blurs content behind the menu --- */
     .menu-overlay {
       position: fixed;
