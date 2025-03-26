@@ -1,0 +1,20 @@
+{
+  "name": "https://prepa-h.pages.dev",
+  "short_name": "PRÉPA H25",
+  "start_url": "https://prepa-h.pages.dev/",
+  "display": "standalone",
+  "background_color": "#0D1C40",
+  "theme_color": "#0D1C40",
+  "icons": [
+    {
+      "src": "/https://github.com/HansHugoHMB/Images/blob/main/LPH3.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/https://github.com/HansHugoHMB/Images/blob/main/LPH3.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
