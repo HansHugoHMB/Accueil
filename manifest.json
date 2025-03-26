@@ -7,12 +7,12 @@
   "theme_color": "#0D1C40",
   "icons": [
     {
-      "src": "/https://github.com/HansHugoHMB/Images/blob/main/LPH3.png",
+      "src": "/https://raw.githubusercontent.com/HansHugoHMB/Images/main/LPH3.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/https://github.com/HansHugoHMB/Images/blob/main/LPH3.png",
+      "src": "/https://raw.githubusercontent.com/HansHugoHMB/Images/main/LPH3.png",
       "sizes": "512x512",
       "type": "image/png"
     }
