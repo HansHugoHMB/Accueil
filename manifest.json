@@ -6,106 +6,30 @@
   "background_color": "#0D1C40",
   "theme_color": "#0D1C40",
   "scope": "/",
-  "description": "Application officielle de PRÉPA H25",
-  "dir": "ltr",
-  "lang": "fr",
-  "orientation": "portrait-primary",
-  "categories": ["education", "productivity", "utilities"],
-  "screenshots": [
-    {
-      "src": "/screenshots/home.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    },
-    {
-      "src": "/screenshots/menu.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    }
-  ],
-  "iarc_rating_id": "e10e",
-  "shortcuts": [
-    {
-      "name": "Ouvrir l'emploi du temps",
-      "short_name": "Emploi du temps",
-      "description": "Accédez rapidement à l'emploi du temps",
-      "url": "/schedule.html"
-    },
-    {
-      "name": "Voir les annonces",
-      "short_name": "Annonces",
-      "description": "Consultez les dernières annonces",
-      "url": "/announcements.html"
-    }
-  ],
-  "theme_color_adjustable": false,
-  "background_color_adjustable": false,
-  "launch_handler": {
-    "client_mode": "navigate-existing"
-  },
-  "share_target": {
-    "action": "/share.html",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  },
-  "protocol_handlers": [
-    {
-      "protocol": "web+prepa",
-      "url": "/handle?url=%s"
-    }
-  ],
-  "file_handlers": [
-    {
-      "action": "/open-file",
-      "accept": {
-        "application/pdf": [".pdf"],
-        "image/png": [".png"],
-        "image/jpeg": [".jpg", ".jpeg"]
-      }
-    }
-  ],
+  "description": "Application pour la préparation H25",
+  "orientation": "any",
   "related_applications": [
     {
-      "platform": "web",
+      "platform": "webapp",
       "url": "https://prepa-h.pages.dev/"
     },
     {
-      "platform": "web",
+      "platform": "webapp",
       "url": "https://prepa.pages.dev/"
     },
     {
-      "platform": "web",
+      "platform": "webapp",
       "url": "https://mbayamuambahans.home.blog/"
     }
   ],
   "prefer_related_applications": false,
-  "capture_links": "new-client",
-  "display_override": ["fullscreen", "minimal-ui"],
-  "text_direction": "auto",
-  "scope_extensions": [
-    "/extra/",
-    "/dashboard/"
-  ],
-  "handle_links": "preferred",
-  "permissions_policy": {
-    "geolocation": ["self"],
-    "microphone": [],
-    "camera": []
-  },
-  "offline_capable": true,
+  "screenshots": [],
+  "categories": ["education", "productivity"],
+  "lang": "fr-FR",
+  "dir": "ltr",
   "serviceworker": {
-    "src": "/sw.js",
-    "scope": "/",
-    "update_via_cache": "all"
+    "src": "/service-worker.js",
+    "scope": "/"
   },
-  "universal_links": {
-    "enabled": true,
-    "paths": ["/", "/schedule", "/announcements"]
-  },
-  "voice_assistant_enabled": false
+  "version": "03.2025_HMB-TECH"
 }
