@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<tête>
+<!-- Balise Google (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8S2ZNC74FW"></script>
+<script>
+  fenêtre.dataLayer = fenêtre.dataLayer || [];
+  fonction gtag(){dataLayer.push(arguments);}
+  gtag('js', nouvelle Date());
+
+  gtag('config', 'G-8S2ZNC74FW');
+</script>
+<meta name="google-site-verification" content="rh5Uzp74tmYRX1PDEYv_SVP8fO_f5jKeNovku1DUY9k" />
+<link rel="icon" href="https://raw.githubusercontent.com/HansHugoHMB/Images/main/FAV.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* --- Réinitialisation globale / base --- */
+    corps {
+      marge : 0 ;
+      padding-top: 99px; /* Réserver de l'espace pour l'en-tête fixe */
+      hauteur : auto ;
+    famille de polices : « serif », sans-serif ;
+      overflow-x : caché ;
+      -webkit-tap-highlight-color: transparent; /* Supprimer la surbrillance du tapotement sur mobile */
+    }
+
+    /* --- Conteneur d'en-tête --- */
+    .en-tête mobile {
+      position : fixe ;
+      haut : 0 ;
+      gauche : 0 ;
+      droite : 0 ;
+      hauteur : 99px ;
+      background-color: #0D1C40; /* Couleur bleu marine */
+      z-index : 1000 ;
+      boîte-ombre : 0 1px 3px rgba(0,0,0,0.2);
+      affichage : flex ;
+      align-items: centre;
+      remplissage : 0 15px ;
+      justify-content: space-between; /* Distribuer l'espace entre les éléments */
+    }
+
+    /* Sceau à l'extrême gauche */
+    .joint d'en-tête {
+      largeur : 40px ;
+      hauteur : auto ;
+      marge droite : 10px ;
+    }
+
+    /* Texte du titre au centre */
+    .titre-en-tête {
+      couleur : #fff;
+      font-weight: gras;
+      font-size: 1.6em; /* Taille de police encore augmentée */
+      alignement du texte : centre ;
+      marge : 0 ; /* Supprimer la marge automatique pour permettre le centrage avec flexbox */
+      hauteur de ligne : 1,2 em ;
+      flex-grow: 1; /* Autoriser le titre à occuper l'espace disponible */
+    }
+
+    .header-digi {
+  hauteur : auto ;
+  max-height: 76px; /* Hauteur maximale augmentée */
+  marge gauche : 10 px ; /* Ajouter un peu d'espacement à gauche */
+  filtre : luminosité(0) inverser(1); /* Rendre les pixels noirs blancs */
+  largeur : automatique ; /* Laisser la largeur s'ajuster à l'image */
+  largeur minimale : 76 px ; /* Réserver une largeur minimale basée sur la hauteur max (ou la largeur réelle de l'image) */
+  flex-rétrécissement : 0 ; /* Empêcher l'image de rétrécir */
+}
+    /* --- Bouton Menu Hamburger (style Nouveau) --- */
+.hamburger-menu {
+  arrière-plan : aucun ; /* Fond neutre */
+  bordure : aucune ;
+  curseur : pointeur ;
+  remplissage : 10 px ; /* Ajustez le padding selon vos besoins */
+  marge gauche : 15 px ; /* Conservez ou ajustez la marge gauche */
+  ordre : -1 ; /* Conservez la position à gauche */
+  affichage : flex ;
+  flex-direction : colonne ;
+  justifier-contenu : centre ; /* Centrer les barres verticalement dans le bouton */
+  aligner les éléments : flex-start ; /* Aligne les barres à gauche */
+  largeur : 36 px ; /* Ajustez la largeur du bouton pour contenir 30px */
+  hauteur : automatique ; /* La hauteur s'ajuste au contenu */
+}
+
+.mobile-header .hamburger-menu span {
+  display: bloquer !important; /* Forcer l'affichage */
+  couleur d'arrière-plan : blanc !important ; /* Forcer la couleur blanche */
+  rayon de bordure : 10 px ;
+  hauteur : 4px ;
+  marge inférieure : 2,5 px ;
+  transition : transformation 0,3 s entrée-sortie, opacité 0,3 s entrée-sortie ;
+}
+
+.mobile-header .hamburger-menu span:premier-enfant {
+  largeur : 30px ;
+}
+
+.mobile-header .hamburger-menu span:nth-child(2) {
+  largeur : 22,5 px ;
+}
+
+.mobile-header .hamburger-menu span:dernier-enfant {
+  largeur : 15 px ;
+  marge inférieure : 0 ;
+}
+
+.hamburger-menu.open span {
+  /* Styles pour l'état ouvert (si vous en avez) */
+}
+    /* --- La superposition qui floute le contenu derrière le menu --- */
+    .menu-overlay {
+      position : fixe ;
+      haut : 0 ;
+      gauche : 0 ;
+      largeur : 100 % ;
+      hauteur : 100 % ;
+      backdrop-filter: blur(5px); /* Flou derrière le menu */
+      couleur d'arrière-plan : rgba(0,0,0,0.2);
+      z-index : 999 ;
+      affichage : aucun ;
+      opacité : 0 ;
+      transition : opacité 0,3 s entrée-sortie progressive ;
+    }
+    .menu-overlay.ouvrir {
+      affichage : bloc ;
+      opacité : 1 ;
+    }
+
+    /* --- Menu mobile coulissant (maintenant un panneau plus petit) --- */
+    .mobile-menu {
+      position : fixe ;
+      haut : 10px ; /* Petit espace à partir du haut */
+      gauche : 10px ; /* Petit espace à partir de la gauche */
+      largeur : 250px ;
+      hauteur minimale : 80vh ;
+      background-color: #0D1C40; /* Identique à la couleur de l'en-tête */
+      z-index : 1001 ;
+      boîte-ombre : 2px 2px 8px rgba(0,0,0,0.3);
+      transform: translateX(-150%) rotate(-10deg); /* Commencer plus loin et pivoter */
+      opacité : 0 ;
+      transition : transformation 0,5 s entrée-sortie, opacité 0,5 s entrée-sortie ; /* Vitesse de transition modifiée à 0,5 s */
+      débordement-y : auto ;
+      border-radius: 10px; /* Coins arrondis */
+      rembourrage : 20 px ; /* Un peu d'espacement à l'intérieur */
+    }
+    .mobile-menu.open {
+      transformer : translateX(0) rotate(0deg);
+      opacité : 1 ;
+    }
+
+    /* Bouton Fermer (×) à l'intérieur du menu, coin supérieur droit */
+    .close-menu-btn {
+      position : absolue ;
+      haut : 10 px ;
+      droite : 10px ;
+      background-color: rgba(255, 255, 255, 0.1); /* Arrière-plan clair pour le cercle */
+      couleur : #fff;
+      font-size: 1.5em; /* Taille de police augmentée */
+      curseur : pointeur ;
+      bordure : aucune ;
+      border-radius: 50%; /* Faire un cercle */
+      largeur : 30px ;
+      hauteur : 30px ;
+      affichage : flex ;
+      justifier-contenu : centre ;
+      align-items: centre;
+      line-height: 0.8; /* Ajuster la hauteur de la ligne pour un meilleur centrage */
+    }
+    .close-menu-btn:hover {
+      couleur d'arrière-plan : rgba(255, 255, 255, 0,2);
+      couleur : #ccc ;
+    }
+
+    /* Liste des onglets */
+    .tabs-liste {
+      style de liste : aucun ;
+      marge : 0 ;
+      padding: 40px 0 0; /* Ajuster le remplissage supérieur pour le bouton de fermeture plus grand */
+      affichage : flex ;
+      flex-direction : colonne ;
+    }
+
+    .tab-item {
+      marge : 0 ;
+    }
+
+    .tab-link {
+      décoration de texte : aucune ;
+      couleur : #fff;
+      poids de police : 500 ;
+      remplissage : 10px 0 ;
+      affichage : bloc ;
+      transition : arrière-plan 0,3 s de facilité ;
+    }
+    .tab-link:hover {
+      arrière-plan : rgba(255,255,255,0.1);
+      rayon de bordure : 4 px ;
+      remplissage gauche : 10 px ;
+    }
+    .tab-link.active {
+      arrière-plan : rgba(255,255,255,0.2);
+      rayon de bordure : 4 px ;
+    }
+
+    /* --- Contenu Iframe --- */
+    .contenu-iframe {
+      position : fixe ;
+      haut : 99px ;
+      gauche : 0 ;
+      largeur : 100 % ;
+      hauteur : calc(100% - 99px);
+      bordure : aucune ;
+      z-index : 1 ;
+      transition : filtre 0,3 s de facilité ;
+    }
+
+    /* --- Superposition de sécurité --- */
+    #securityOverlay {
+      position : fixe ;
+      haut : 0 ;
+      gauche : 0 ;
+      largeur : 100 % ;
+      hauteur : 100 % ;
+      arrière-plan : rgba(0,0,0,0.9);
+      affichage : flex ;
+      justifier-contenu : centre ;
+      align-items: centre;
+      z-index : 1002 ;
+    }
+    .boîte de sécurité {
+      fond : blanc ;
+      remplissage : 20 px ;
+      rayon de bordure : 8 px ;
+      largeur : 80 % ;
+      largeur maximale : 300 px ;
+      alignement du texte : centre ;
+    }
+    .entrée de sécurité {
+      largeur : calc(100% - 24px);
+      remplissage : 10 px ;
+      marge : 10px 0 ;
+      bordure : 1px solide #ccc ;
+      rayon de bordure : 4 px ;
+      taille de police : 1 em ;
+      text-transform : majuscule ;
+      alignement du texte : centre ;
+      espacement des lettres : 2 px ;
+    }
+    #erreurdesécurité {
+      couleur : bleu;
+      affichage : aucun ;
+      taille de police : 0,9 em ;
+    }
+  </style>
+<link rel="manifest" href="/manifest.json">
+<meta name="msvalidate.01" content="CA270E48A71438001C030A8C24B4FDCC" />
+</head>
+<corps>
+ <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/4/49/INSTITUT_SUP%C3%89RIEUR_DES_TECHNIQUES_APPLIQU%C3%89ES_20250323_203034_0000.png">
+
+  <div class="mobile-header">
+    <button class="hamburger-menu" onclick="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <span class="header-title" style="font-family: 'Boldonse', sans-serif;"><h4>
+    PRÉPA H25
+</span>
+
+    <img src="https://github.com/HansHugoHMB/Images/blob/main/LPH3.png?raw=true"
+         alt="Digi"
+         classe="header-digi">
+  </div>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu-btn" onclick="toggleMobileMenu()">×</button>
+
+    <ul class="tabs-list">
+      <li class="tab-item"><a href="https://prepa.pages.dev" class="tab-link active">Accueil</a></li>
+      <li class="tab-item"><a href="https://ista.optsolution.net/forms" class="tab-link">Informations</a></li>
+      <li class="tab-item"><a href="https://github.com/HansHugoHMB/Accueil/releases/download/Hans/PREPA.H.POWER.FAMILY.1.apk" class="tab-link">APK Mobile</a></li>
+      <li class="tab-item"><a href=https://github.com/HansHugoHMB/Images/blob/main/LPH1.png?raw=true" class="tab-link">Galerie</a></li>
+      <li class="tab-item"><a href="https://mbayamuambahans.home.blog" class="tab-link">Développeur</a></li>
+      <li class="tab-item"><a href="https://hanshugohmb.github.io/Baya-s-Family-/index.html" class="tab-link">Biographie</a></li>
+    </ul>
+  </div>
+
+  <iframe class="content-iframe" id="contentFrame"
+          src="https://hanshugohmb.github.io/Power-family-/">
+  </iframe>
+
+  <script>
+    const mobileMenu = document.getElementById('mobileMenu');
+    const contentFrame = document.getElementById('contentFrame');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuLinks = mobileMenu.querySelectorAll('.tab-link');
+
+    fonction toggleMobileMenu() {
+      mobileMenu.classList.toggle('ouvrir');
+      menuOverlay.classList.toggle('ouvrir');
+      // Flouter éventuellement l'iframe :
+      // contentFrame.classList.toggle('menu-open');
+    }
+
+    // Fermer le menu en cliquant sur la superposition
+    menuOverlay.addEventListener('clic', toggleMobileMenu);
+
+    // Charger le contenu initial dans l'iframe
+    contentFrame.src = mobileMenu.querySelector('.tab-link.active').href;
+
+    // Gérer les clics dans le menu mobile
+    menuLinks.forEach(lien => {
+      link.addEventListener('clic', function(e) {
+        e.preventDefault();
+        // Mettre à jour l'onglet actif
+        menuLinks.forEach(l => l.classList.remove('active'));
+        cette.classList.add('actif');
+        // Charger le contenu dans l'iframe
+        contentFrame.src = this.href;
+        // Fermer le menu
+        basculeMobileMenu();
+      });
+    });
+  </script>
+
+  <div id="securityOverlay">
+    <div class="security-box" style="background: #0D1C40; padding: 20px; border-radius: 8px; width: 80%; max-width: 300px; text-align: center; color: white; border: 3px solid yellow; outline: 3px solid red; animation: rotateYellow 2s linear infinite, rotateRed 2s linear infinite;">
+<style>
+  /* ... autres styles ... */
+  @keyframes rotateYellow {
+    0% { border-color: jaune; }
+    100% { border-color: rouge; }
+  }
+
+  @keyframes rotateRed {
+    0% { outline-color: rouge; }
+    100% { outline-color: jaune; }
+  }
+  /* ... autres styles ... */
+</style>
+      <h2>VÉRIFICATION</h2>
+      <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
+      <input type="texte"
+             id="securityAnswer"
+             classe="security-input"
+             espace réservé="XX/XXXX"
+             longueur maximale = "7"
+             motif="[A-Z0-9/]+"
+             requis>
+      <p id="securityError">Réponse incorrecte !!</p>
+    </div>
+  </div>
+
+  <script>
+    // Contrôle de sécurité
+    const RÉPONSE_ATTENDUE = "24/0000";
+    const securityOverlay = document.getElementById('securityOverlay');
+
+    fonction verifySecurity() {
+      const userInput = document.getElementById('securityAnswer').value.toUpperCase();
+      const errorElement = document.getElementById('securityError');
+
+      si(userInput === RÉPONSE_ATTENDUE) {
+        securityOverlay.style.display = 'aucun';
+      } autre {
+        errorElement.style.display = 'bloc';
+        document.getElementById('securityAnswer').value = '';
+        setTimeout(() => errorElement.style.display = 'none', 2000);
+      }
+    }
+
+    // Formatage automatique + vérification
+    document.getElementById('securityAnswer').addEventListener('input', function() {
+      cette.valeur = cette.valeur.enMajuscules().replace(/[^A-Z0-9/]/g, '');
+      // Ajout automatique d'une barre oblique après 2 caractères
+      si(cette.valeur.longueur === 2 && !cette.valeur.includes('/')) {
+        cette.valeur += '/';
+      }
+      // Si la longueur est atteinte, vérifier
+      si (cette.valeur.longueur === 7) {
+        vérifier la sécurité();
+      }
+    });
+  </script>
+
+<script>
+  if ('serviceWorker' dans le navigateur) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+        // L'enregistrement a réussi
+        console.log('ServiceWorker enregistré avec succès avec la portée : ', Registration.scope);
+      }, fonction(err) {
+        // L'enregistrement a échoué :(
+        console.log('L'enregistrement du ServiceWorker a échoué : ', err);
+      });
+    });
+  } autre {
+    console.log('Les Service Workers ne sont pas pris en charge par ce navigateur.');
+  }
+</script>
+
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c21dd599e2648579e3284bd3ac0b6bc"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
+
+<!DOCTYPE html>
+<html lang="fr">
+<tête>
+    <meta charset="UTF-8">
+    <meta name="description" content="Bannière animée avec les couleurs de la RDC">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="importance" content="élevé">
+    <style>
+        /* Bannière qui reste fixée après le premier code avec une hauteur réduite */
+        .rdc-bannière {
+            position : fixe ;
+            haut : 99 px ; /* Ajusté pour se placer 2px après le premier code */
+            gauche : 0 ;
+            largeur : 100 % ;
+            hauteur : 0,5 cm ; /* Hauteur réduite de moitié */
+            débordement : caché ;
+            indice z : 1000 ; /* S'assure que la bannière est au-dessus des autres éléments */
+        }
+
+        /* Vagues de couleurs de la RDC : bleu, jaune et rouge */
+        .onde de couleur {
+            largeur : 300 % ;
+            hauteur : 100 % ;
+            arrière-plan : dégradé linéaire(
+                à droite,
+                #1E90FF, /* Bleu de la RDC */
+                #1E90FF 33,33%,
+                #FFD700 33,33%, /*Jaune de la RDC*/
+                #FFD700 66,66%,
+                #CE1126 66,66%, /*Rouge de la RDC*/
+                #CE1126 100%
+            );
+            animation : diapositive 10s linéaire infinie ;
+        }
+
+        /* Animation de défilement des couleurs */
+        @keyframes diapositive {
+            0% { transform: translateX(-66,66%); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<corps>
+
+    <!--Bannière fixe en haut avec l'animation des couleurs de la RDC -->
+    <div class="rdc-banner">
+        <div class="color-wave"></div>
+    </div>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c21dd599e2648579e3284bd3ac0b6bc"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
+
+<!DOCTYPE html>
+<html lang="fr">
+<tête>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>présences en ligne</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/HansHugoHMB/Images/main/FAV.ico" type="image/x-icon">
+</head>
+<corps>
+    <!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c21dd599e2648579e3284bd3ac0b6bc"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<tête>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gestions des présences en ligne</title>
+    <!-- Lien vers Google Fonts pour la police Jaini -->
+    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+   
