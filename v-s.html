@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Téléchargeur de Code Source AVEC HMB-TECH</title>
+    <title>Téléchargeur de Code Source</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Jaini:wght@400;700&display=swap'); /* Importation de la police Jaini */
+        @import url('https://fonts.googleapis.com/css2?family=Jaini:wght@400;700&display=swap');
 
         body {
-            font-family: 'Jaini', sans-serif; /* Utilisation de la police Jaini */
+            font-family: 'Jaini', sans-serif;
             display: flex;
-            flex-direction: column; /* Organisation en colonne */
+            flex-direction: column;
             min-height: 100vh;
             margin: 0;
             background-color: #0D1C40;
@@ -18,10 +18,14 @@
         .header {
             text-align: center;
             padding: 20px;
+            position: sticky;
+            top: 0;
+            background-color: #0D1C40;
+            z-index: 100;
         }
         .container {
-            width: 90%; /* 90% de la largeur de la fenêtre */
-            margin: 20px auto; /* Marge automatique pour centrer */
+            width: 90%;
+            margin: 20px auto;
             padding: 20px;
             border-radius: 5px;
             text-align: center;
@@ -36,7 +40,7 @@
             padding: 8px 15px;
             background-color: #0D1C40;
             color: white;
-            border: none;
+            border: 3px solid white;
             border-radius: 4px;
             cursor: pointer;
         }
@@ -48,13 +52,29 @@
             white-space: pre-wrap;
             border: 1px solid #ddd;
             padding: 10px;
-            max-height: 400px;
-            overflow-y: auto;
             background-color: #0D1C40;
             color: white;
             text-align: left;
-            width: 90%; /* 90% de la largeur de la fenêtre */
-            margin: 20px auto; /* Marge automatique pour centrer */
+            width: 90%;
+            margin: 20px auto 5px auto;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            position: sticky; /* Les boutons restent fixes en bas */
+            bottom: 0;
+            background-color: #0D1C40; /* Fond pour que les boutons restent visibles */
+            z-index: 100;
+        }
+        .bottom-buttons button {
+            margin: 0 10px;
+            border-radius: 20px;
+            border: 3px solid white;
+            flex: 1; /* Les boutons ont la même taille */
+            max-width: 200px; /* Limite la largeur maximale des boutons */
         }
 
         /* Styles pour colorer le code HTML */
@@ -73,9 +93,12 @@
     <div class="container">
         <input type="text" id="url" placeholder="Entrez l'URL (ex: https://example.com)">
         <button onclick="getSource()">Afficher le code source</button>
-        <button onclick="downloadSource()" id="downloadBtn" style="display: none;">Télécharger</button>
     </div>
     <div id="result"></div>
+    <div class="bottom-buttons">
+        <button onclick="scrollToTop()">REMONTER</button>
+        <button onclick="downloadSource()" id="downloadBtn" style="display: none;">TÉLÉCHARGER</button>
+    </div>
     <script>
         let sourceCode = '';
 
@@ -123,6 +146,10 @@
             highlighted = highlighted.replace(/&lt;!--(.*?)--&gt;/gs, '<span class="comment">&lt;!--$1--&gt;</span>');
             highlighted = highlighted.replace(/&lt;!DOCTYPE html&gt;/gi, '<span class="doctype">&lt;!DOCTYPE html&gt;</span>');
             return highlighted;
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
