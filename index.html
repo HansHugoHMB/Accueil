@@ -491,94 +491,63 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Lien vers Google Fonts pour la police Jaini -->
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
   
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire avec reCAPTCHA Automatique</title>
-    <!-- Script pour reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reCAPTCHA Popup</title>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-    <style>
-        /* Style pour le fond de la page */
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f5f5f5;
-        }
+    /* Fond flouté */
+    .background {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
 
-        /* Pop-up avec le reCAPTCHA centré */
-        .recaptcha-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            border: 3px solid #0D1C40;  /* Contour de couleur personnalisée */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            z-index: 9999;
-        }
-
-        /* Style pour le message après validation */
-        .message {
-            display: none;
-            margin-top: 20px;
-            color: green;
-            font-weight: bold;
-        }
-
-        /* Style pour le bouton de soumission */
-        .submit-btn {
-            padding: 10px 20px;
-            background-color: #0D1C40;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .submit-btn:hover {
-            background-color: #34495e;
-        }
-    </style>
+    /* Conteneur du reCAPTCHA centré */
+    .captcha-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      border: 4px solid #0D1C40;
+      border-radius: 10px;
+      padding: 20px;
+      z-index: 1;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: center;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Pop-up reCAPTCHA -->
-    <div class="recaptcha-popup">
-        <h2>Veuillez valider le reCAPTCHA</h2>
-        <!-- Formulaire de reCAPTCHA -->
-        <div class="g-recaptcha" data-sitekey="6LdqTQ0rAAAAAOY4ySWGhIiDwDQhJkseiWwXgobE" data-callback="onRecaptchaSuccess"></div>
-        
-        <!-- Message de succès -->
-        <div class="message" id="successMessage">
-            Merci pour votre validation, vous avez réussi la vérification reCAPTCHA.
-        </div>
-    </div>
+  <div class="background"></div>
 
-    <script>
-        // Fonction appelée lorsque la case reCAPTCHA est cochée avec succès
-        function onRecaptchaSuccess() {
-            // Afficher le message de succès lorsque la coche est validée
-            document.getElementById('successMessage').style.display = 'block';
-            
-            // Vous pouvez également ajouter ici des actions supplémentaires que vous voulez
-            // par exemple rediriger l'utilisateur après un certain temps, ou déclencher une autre fonction.
-            // Exemple : redirection après 2 secondes
-            setTimeout(function() {
-                window.location.href = 'https://votre-URL-de-redirection.com'; // Modifier selon votre besoin
-            }, 2000);
-        }
-    </script>
+  <div class="captcha-container">
+    <div class="g-recaptcha"
+         data-sitekey="6LdqTQ0rAAAAAOY4ySWGhIiDwDQhJkseiWwXgobE"
+         data-callback="onRecaptchaSuccess">
+    </div>
+  </div>
+
+  <script>
+    function onRecaptchaSuccess() {
+      window.location.href = "https://prepa-h.pages.dev";
+    }
+  </script>
 
 </body>
 </html>
