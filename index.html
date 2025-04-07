@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-T2B3ZJ3L');</script>
-<!-- End Google Tag Manager -->
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8S2ZNC74FW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -259,17 +256,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: none;
       font-size: 0.9em;
     }
+    #matriculeVerification {
+      display: none; /* Initially hidden */
+    }
+    .recaptcha-container {
+      display: flex;
+      justify-content: center;
+    }
   </style>
 <link rel="manifest" href="/manifest.json">
 <meta name="msvalidate.01" content="CA270E48A71438001C030A8C24B4FDCC" />
 <meta name="google-site-verification" content="kbYwRGQJsR7J4RTqvgLEVG2VSrAw6gWRWYo5c1YIo2g" />
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T2B3ZJ3L"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
- <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/4/49/INSTITUT_SUP%C3%89RIEUR_DES_TECHNIQUES_APPLIQU%C3%89ES_20250323_203034_0000.png">
+<link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/4/49/INSTITUT_SUP%C3%89RIEUR_DES_TECHNIQUES_APPLIQU%C3%89ES_20250323_203034_0000.png">
 
   <div class="mobile-header">
     <button class="hamburger-menu" onclick="toggleMobileMenu()">
@@ -355,15 +358,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   /* ... autres styles ... */
 </style>
       <h2>VÉRIFICATION</h2>
-      <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
-      <input type="text"
-             id="securityAnswer"
-             class="security-input"
-             placeholder="XX/XXXX"
-             maxlength="7"
-             pattern="[A-Z0-9/]+"
-             required>
-      <p id="securityError">Réponse incorrect !!</p>
+      <div class="recaptcha-container">
+        <div class="g-recaptcha"
+             data-sitekey="6LdqTQ0rAAAAAOY4ySWGhIiDwDQhJkseiWwXgobE"
+             data-callback="onRecaptchaSuccess">
+        </div>
+      </div>
+      <div id="matriculeVerification">
+        <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
+        <input type="text"
+               id="securityAnswer"
+               class="security-input"
+               placeholder="XX/XXXX"
+               maxlength="7"
+               pattern="[A-Z0-9/]+"
+               required>
+        <p id="securityError">Réponse incorrect !!</p>
+      </div>
     </div>
   </div>
 
@@ -371,6 +382,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // Security check
     const EXPECTED_ANSWER = "24/0000";
     const securityOverlay = document.getElementById('securityOverlay');
+    const matriculeVerificationDiv = document.getElementById('matriculeVerification');
+
+    function onRecaptchaSuccess(response) {
+      // Called when reCAPTCHA verification is successful
+      matriculeVerificationDiv.style.display = 'block';
+    }
 
     function verifySecurity() {
       const userInput = document.getElementById('securityAnswer').value.toUpperCase();
@@ -385,7 +402,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     }
 
-    // Auto-format + verify
+    // Auto-format + verify for matricule input
     document.getElementById('securityAnswer').addEventListener('input', function() {
       this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
       // Auto-add slash after 2 chars
@@ -444,9 +461,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             background: linear-gradient(
                 to right,
                 #1E90FF, /* Bleu de la RDC */
-                #1E90FF 33.33%, 
+                #1E90FF 33.33%,
                 #FFD700 33.33%, /* Jaune de la RDC */
-                #FFD700 66.66%, 
+                #FFD700 66.66%,
                 #CE1126 66.66%, /* Rouge de la RDC */
                 #CE1126 100%
             );
@@ -462,7 +479,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </head>
 <body>
 
-    <!-- Bannière fixe en haut avec l'animation des couleurs de la RDC -->
     <div class="rdc-banner">
         <div class="color-wave"></div>
     </div>
@@ -479,84 +495,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </head>
 <body>
     </body>
-</html>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vérification</title>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .background {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      backdrop-filter: blur(10px);
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 0;
-    }
-
-    .captcha-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border: 4px solid #0D1C40;
-      border-radius: 10px;
-      padding: 20px;
-      z-index: 1;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      display: flex;
-      justify-content: center;
-    }
-
-    #site-content {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Fond flouté -->
-  <div class="background" id="overlay"></div>
-
-  <!-- Boîte du CAPTCHA -->
-  <div class="captcha-container" id="captcha-box">
-    <div class="g-recaptcha"
-         data-sitekey="6LdqTQ0rAAAAAOY4ySWGhIiDwDQhJkseiWwXgobE"
-         data-callback="onRecaptchaSuccess">
-    </div>
-  </div>
-
-  <!-- Contenu de ton site -->
-  <div id="site-content">
-    <!-- Ton site commence ici -->
-    <h1 style="text-align:center;">Bienvenue sur Prépa H</h1>
-    <p style="text-align:center;">Tu peux maintenant accéder au contenu sécurisé.</p>
-    <!-- Ajoute le reste de ton site ici -->
-  </div>
-
-  <script>
-    function onRecaptchaSuccess() {
-      // Vérifie que l'URL est bien la bonne
-      if (window.location.hostname === "prepa-h.pages.dev") {
-        document.getElementById("captcha-box").style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("site-content").style.display = "block";
-      } else {
-        alert("Accès refusé : domaine invalide.");
-      }
-    }
-  </script>
-
-</body>
 </html>
