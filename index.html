@@ -17,7 +17,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="google-site-verification" content="rh5Uzp74tmYRX1PDEYv_SVP8fO_f5jKeNovku1DUY9k" />
 <link rel="icon" href="https://raw.githubusercontent.com/HansHugoHMB/Images/main/FAV.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Underdog&display=swap" rel="stylesheet">
+<style>
     /* --- Global reset / base --- */
     body {
       margin: 0;
@@ -60,6 +63,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       margin: 0; /* Remove auto margin to allow centering with flexbox */
       line-height: 1.2em;
       flex-grow: 1; /* Allow title to take up available space */
+      font-family: 'Roboto', sans-serif; /* Added this line */
     }
 
     .header-digi {
@@ -233,12 +237,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       z-index: 1002;
     }
     .security-box {
-      background: white;
+      background: #0D1C40;
       padding: 20px;
       border-radius: 8px;
       width: 80%;
       max-width: 300px;
       text-align: center;
+      color: white;
+      border: 3px solid yellow;
+      outline: 3px solid red;
+      animation: rotateYellow 2s linear infinite, rotateRed 2s linear infinite;
     }
     .security-input {
       width: calc(100% - 24px);
@@ -263,11 +271,110 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: flex;
       justify-content: center;
     }
+
+    /* --- CAPTCHA Slider Styles --- */
+    .captcha-wrapper {
+        position: absolute; /* Changed to absolute to be contained within security-box */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+    }
+
+    .captcha-container {
+        width: 280px; /* Adjusted width to fit inside security-box */
+        background: white;
+        padding: 15px;
+        border: 2px solid #0D1C40;
+        border-radius: 15px;
+        position: relative;
+    }
+
+    .slider-container {
+        height: 3mm;
+        position: relative;
+        overflow: visible;
+        border-radius: 10px;
+        background-color: #f0f0f0;
+    }
+
+    .progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0;
+        background-color: #0D1C40; /* Changed to yellow for better visibility */
+        border-radius: 10px 0 0 10px;
+        pointer-events: none;
+    }
+
+    .slider {
+        width: calc(100% + 20px); /* Ajustement pour le curseur */
+        height: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+        outline: none;
+        margin: 0;
+        margin-left: -10px; /* Compensation pour le curseur */
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Style du curseur pour Chrome/Safari */
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #0D1C40;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-top: -8.5px; /* (hauteur du curseur - hauteur de la barre) / 2 */
+        position: relative;
+        z-index: 3;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+
+    /* Style du curseur pour Firefox */
+    .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #0D1C40;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        z-index: 3;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+
+    .slider::-moz-range-track {
+        background: transparent;
+        border: none;
+    }
+
+    /* Pour masquer la piste par défaut */
+    .slider::-webkit-slider-runnable-track {
+        background: transparent;
+        border: none;
+        height: 3mm;
+    }
+
+    .blur-background {
+        /* Removed blur for the overlay */
+        display: none; /* Hide the standalone blur background */
+    }
+
+    .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
   </style>
 <link rel="manifest" href="/manifest.json">
 <meta name="msvalidate.01" content="CA270E48A71438001C030A8C24B4FDCC" />
 <meta name="google-site-verification" content="kbYwRGQJsR7J4RTqvgLEVG2VSrAw6gWRWYo5c1YIo2g" />
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T2B3ZJ3L"
@@ -281,8 +388,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span></span>
     </button>
 
-    <span class="header-title" style="font-family: 'Boldonse', sans-serif;"><h4>
-    PRÉPA H25</h4>
+    <span class="header-title" style="font-family: 'Underdog', system-ui;"><h3>
+    PRÉPA H25</h3>
 </span>
 
     <img src="https://github.com/HansHugoHMB/Images/blob/main/LPH3.png?raw=true"
@@ -343,28 +450,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </script>
 
   <div id="securityOverlay">
-    <div class="security-box" style="background: #0D1C40; padding: 20px; border-radius: 8px; width: 80%; max-width: 300px; text-align: center; color: white; border: 3px solid yellow; outline: 3px solid red; animation: rotateYellow 2s linear infinite, rotateRed 2s linear infinite;">
-<style>
-  /* ... autres styles ... */
-  @keyframes rotateYellow {
-    0% { border-color: yellow; }
-    100% { border-color: red; }
-  }
-
-  @keyframes rotateRed {
-    0% { outline-color: red; }
-    100% { outline-color: yellow; }
-  }
-  /* ... autres styles ... */
-</style>
+    <div class="security-box">
       <h2>VÉRIFICATION</h2>
-      <div class="recaptcha-container">
-        <div class="g-recaptcha"
-             data-sitekey="6LdqTQ0rAAAAAOY4ySWGhIiDwDQhJkseiWwXgobE"
-             data-callback="onRecaptchaSuccess">
+      <div class="captcha-wrapper">
+        <div class="captcha-container">
+            <div class="slider-container">
+                <div class="progress-bar"></div>
+                <input type="range" class="slider" value="0" min="0" max="100" step="1">
+            </div>
         </div>
       </div>
-      <div id="matriculeVerification">
+      <div id="matriculeVerification" style="display: none;">
         <p style="font-size: 0.9em;">Les six premiers chiffres de votre matricule :</p>
         <input type="text"
                id="securityAnswer"
@@ -384,9 +480,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const securityOverlay = document.getElementById('securityOverlay');
     const matriculeVerificationDiv = document.getElementById('matriculeVerification');
 
-    function onRecaptchaSuccess(response) {
-      // Called when reCAPTCHA verification is successful
-      matriculeVerificationDiv.style.display = 'block';
+    // Slider CAPTCHA elements
+    const slider = document.querySelector('#securityOverlay .slider');
+    const progressBar = document.querySelector('#securityOverlay .progress-bar');
+    const captchaWrapper = document.querySelector('#securityOverlay .captcha-wrapper');
+    // const blurBackground = document.querySelector('.blur-background'); // No longer needed
+
+    function updateProgress(value) {
+        requestAnimationFrame(() => {
+            progressBar.style.width = `${value}%`;
+        });
+    }
+
+    function validateCaptcha() {
+        setTimeout(() => {
+            captchaWrapper.classList.add('fade-out');
+            // blurBackground.classList.add('fade-out'); // No longer needed
+
+            setTimeout(() => {
+                captchaWrapper.style.display = 'none'; // Hide the slider
+                matriculeVerificationDiv.style.display = 'block'; // Show matricule input
+            }, 500);
+        }, 200);
+    }
+
+    if (slider && progressBar && captchaWrapper) {
+        slider.addEventListener('input', (e) => {
+            updateProgress(e.target.value);
+            if (parseInt(e.target.value) === 100) {
+                validateCaptcha();
+            }
+        });
+
+        slider.addEventListener('touchmove', () => {
+            updateProgress(slider.value);
+            if (parseInt(slider.value) === 100) {
+                validateCaptcha();
+            }
+        });
+
+        updateProgress(0);
     }
 
     function verifySecurity() {
