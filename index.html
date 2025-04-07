@@ -481,22 +481,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </body>
 </html>
 
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gestions des présences en ligne</title>
-    <!-- Lien vers Google Fonts pour la police Jaini -->
-    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
-  
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>reCAPTCHA Popup</title>
+  <title>Vérification</title>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     body, html {
@@ -506,7 +496,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       overflow: hidden;
     }
 
-    /* Fond flouté */
     .background {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -515,13 +504,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       z-index: 0;
     }
 
-    /* Conteneur du reCAPTCHA centré */
     .captcha-container {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #ffffff;
+      background: white;
       border: 4px solid #0D1C40;
       border-radius: 10px;
       padding: 20px;
@@ -530,22 +518,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       display: flex;
       justify-content: center;
     }
+
+    #site-content {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <div class="background"></div>
+  <!-- Fond flouté -->
+  <div class="background" id="overlay"></div>
 
-  <div class="captcha-container">
+  <!-- Boîte du CAPTCHA -->
+  <div class="captcha-container" id="captcha-box">
     <div class="g-recaptcha"
          data-sitekey="6LdqTQ0rAAAAAOY4ySWGhIiDwDQhJkseiWwXgobE"
          data-callback="onRecaptchaSuccess">
     </div>
   </div>
 
+  <!-- Contenu de ton site -->
+  <div id="site-content">
+    <!-- Ton site commence ici -->
+    <h1 style="text-align:center;">Bienvenue sur Prépa H</h1>
+    <p style="text-align:center;">Tu peux maintenant accéder au contenu sécurisé.</p>
+    <!-- Ajoute le reste de ton site ici -->
+  </div>
+
   <script>
     function onRecaptchaSuccess() {
-      window.location.href = "https://prepa-h.pages.dev";
+      // Vérifie que l'URL est bien la bonne
+      if (window.location.hostname === "prepa-h.pages.dev") {
+        document.getElementById("captcha-box").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("site-content").style.display = "block";
+      } else {
+        alert("Accès refusé : domaine invalide.");
+      }
     }
   </script>
 
